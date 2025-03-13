@@ -5,13 +5,12 @@ services:
     container_name: spring-boot
     build:
       context: ./backend
-    volumes:
-      - ./backend/src:/app/src
+    # volumes:
+    #   - ./backend/src:/app/src
     ports:
       - "8080:8080"
       - "35729:35729"
       - "5005:5005"
-    command: sh ./docker-entrypoint.sh
     depends_on:
       - database
     networks:
