@@ -1,7 +1,10 @@
 package com.quickplate.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +34,7 @@ public class UserController {
         int id = users.size() + 1;
         user.put("id", String.valueOf(id));
         users.put(id, user);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.created(URI.create("/api/users/" + id)).body(user);
     }
 
     @PutMapping("/{id}")
