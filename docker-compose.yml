@@ -39,9 +39,9 @@ services:
     container_name: react-frontend
     build:
       context: ./frontend
-    volumes:
-      - ./frontend/src:/app
-      - /app/node_modules
+    # volumes:
+    #  - ./frontend/src:/app
+    #  - /app/node_modules
     environment:
       - WATCHPACK_POLLING=true
     ports:

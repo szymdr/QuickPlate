@@ -25,4 +25,31 @@ public class UserController {
         }
         return ResponseEntity.ok(users.get(id));
     }
+
+    @PostMapping
+    public ResponseEntity<Object> createUser(@RequestBody Map<String, String> user) {
+        int id = users.size() + 1;
+        user.put("id", String.valueOf(id));
+        users.put(id, user);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateUser(@PathVariable int id, @RequestBody Map<String, String> user) {
+        if (!users.containsKey(id)) {
+            return ResponseEntity.status(404).body(Map.of("error", "User not found"));
+        }
+        user.put("id", String.valueOf(id));
+        users.put(id, user);
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable int id) {
+        if (!users.containsKey(id)) {
+            return ResponseEntity.status(404).body(Map.of("error", "User not found"));
+        }
+        users.remove(id);
+        return ResponseEntity.ok(Map.of("message", "User deleted"));
+    }
 }

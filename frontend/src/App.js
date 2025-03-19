@@ -1,19 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
-function App() {
-    const [message, setMessage] = useState("");
-
-    useEffect(() => {
-        fetch("http://localhost:8080/api/hello")
-            .then((response) => response.text())
-            .then((data) => setMessage(data));
-    }, []);
-
+function Home() {
     return (
         <div>
             <h1>Hello from Frontend!</h1>
-            <p>{message}</p>
+            <Link to="/dashboard">Go to Dashboard</Link>
         </div>
+    );
+}
+
+function Dashboard() {
+    return <h2>Dashboard Page</h2>;
+}
+
+function App() {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+            </Routes>
+        </Router>
     );
 }
 
