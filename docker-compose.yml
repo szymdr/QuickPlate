@@ -5,8 +5,6 @@ services:
     container_name: spring-boot
     build:
       context: ./backend
-    # volumes:
-    #   - ./backend/src:/app/src
     ports:
       - "8080:8080"
       - "35729:35729"
@@ -22,9 +20,11 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: quickplate
+      POSTGRES_DB: postgres
     ports:
       - "5432:5432"
+    networks:
+      - quickplate_network
 
   pgadmin:
     container_name: pgadmin
@@ -39,9 +39,6 @@ services:
     container_name: react-frontend
     build:
       context: ./frontend
-    # volumes:
-    #  - ./frontend/src:/app
-    #  - /app/node_modules
     environment:
       - WATCHPACK_POLLING=true
     ports:

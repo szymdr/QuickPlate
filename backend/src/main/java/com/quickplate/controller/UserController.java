@@ -1,79 +1,64 @@
 package com.quickplate.controller;
 
+import com.quickplate.model.User;
+import com.quickplate.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    private static final Map<Integer, Map<String, String>> users = new HashMap<>() {{
-        put(1, Map.of(
-                "id", "1",
-                "name", "Jan Kowalski",
-                "email", "jan@example.com",
-                "city", "Warszawa",
-                "company", "ACME Inc.",
-                "website", "www.jankowalski.com"
-        ));
-        put(2, Map.of(
-                "id", "2",
-                "name", "Anna Nowak",
-                "email", "anna@example.com",
-                "city", "Kraków",
-                "company", "Beta LLC",
-                "website", "www.annanowak.com"
-        ));
-    }};
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
-    public ResponseEntity<Object> getUsers() {
-        return ResponseEntity.ok(users.values());
+    public ResponseEntity<List<User>> getUsers() {
+         List<User> users = userRepository.findAll();
+         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUserById(@PathVariable int id) {
-        if (!users.containsKey(id)) {
-            return ResponseEntity.status(404).body(Map.of("error", "User not found"));
-        }
-        return ResponseEntity.ok(users.get(id));
+    public ResponseEntity<?> getUserById(@PathVariable UUID id) {
+         Optional<User> userOpt = userRepository.findById(id);
+         if (userOpt.isEmpty()) {
+             return ResponseEntity.status(404).body("User not found");
+         }
+         return ResponseEntity.ok(userOpt.get());
     }
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@RequestBody Map<String, String> user) {
-        int id = users.size() + 1;
-        user.put("id", String.valueOf(id));
-        // Upewniamy się, że wszystkie wymagane pola istnieją
-        user.putIfAbsent("city", "");
-        user.putIfAbsent("company", "");
-        user.putIfAbsent("website", "");
-        users.put(id, user);
-        return ResponseEntity.created(URI.create("/api/users/" + id)).body(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+         if (user.getId() == null) {
+             user.setId(UUID.randomUUID());
+         }
+         User savedUser = userRepository.save(user);
+         return ResponseEntity.created(URI.create("/api/users/" + savedUser.getId())).body(savedUser);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable int id, @RequestBody Map<String, String> user) {
-        if (!users.containsKey(id)) {
-            return ResponseEntity.status(404).body(Map.of("error", "User not found"));
-        }
-        user.put("id", String.valueOf(id));
-        // Upewniamy się, że wszystkie wymagane pola istnieją
-        user.putIfAbsent("city", "");
-        user.putIfAbsent("company", "");
-        user.putIfAbsent("website", "");
-        users.put(id, user);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<?> updateUser(@PathVariable UUID id, @RequestBody User updatedUser) {
+         if (!userRepository.existsById(id)) {
+             return ResponseEntity.status(404).body("User not found");
+         }
+         updatedUser.setId(id);
+         User savedUser = userRepository.save(updatedUser);
+         return ResponseEntity.ok(savedUser);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable int id) {
-        if (!users.containsKey(id)) {
-            return ResponseEntity.status(404).body(Map.of("error", "User not found"));
-        }
-        users.remove(id);
-        return ResponseEntity.ok(Map.of("message", "User deleted"));
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
+         if (!userRepository.existsById(id)) {
+             return ResponseEntity.status(404).body("User not found");
+         }
+         userRepository.deleteById(id);
+         return ResponseEntity.ok("User deleted");
     }
 }
