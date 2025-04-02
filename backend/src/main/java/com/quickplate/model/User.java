@@ -31,7 +31,7 @@ public class User {
     private String phone;
 
     @Column(name = "account_type_id", nullable = false)
-    private UUID accountTypeId;
+    private UUID accountTypeId = UUID.fromString("f6a5e51f-1ee5-44a2-a55e-c7efd47db4da");
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

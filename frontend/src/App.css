@@ -1,6 +1,6 @@
 /* Resetowanie domyślnych stylów */
 * {
-  box-sizing: border-box;
+  box-sizing:content-box;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
@@ -8,7 +8,7 @@
 
 body {
   background-color: #f4f4f4;
-  color: #333;
+  color: #12372A;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,10 +16,10 @@ body {
 }
 
 .wrapper {
-  width: 90%;
+  width: fit-content;
   max-width: 1200px;
   background: #fff;
-  padding: 20px;
+  padding: 1.5em;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -29,6 +29,7 @@ header {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  width: fit-content;
 }
 
 h1 {
@@ -36,32 +37,76 @@ h1 {
   color: #444;
 }
 
-button {
+button.refresh-icon {
+  margin: 2em;
+  background: none;
+  color: #12372A;
+  border: none;
+  cursor: pointer;
+}
+
+button.refresh-icon:hover {
+  color: #294B3F;
+}
+
+button.add-user {
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: #12372A;
   color: white;
   cursor: pointer;
   transition: background 0.3s;
 }
 
-button:hover {
-  background-color: #0056b3;
+button.add-user:hover {
+  background-color: #294B3F;
 }
 
 .user-form {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   gap: 10px;
   margin-bottom: 20px;
 }
 
 .user-form input {
-  flex: 1 1 calc(50% - 10px);
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: #f4f4f4;
+  color: #12372A;
+}
+
+.user-form input:focus {
+  border-color: #12372A;
+  outline: none;
+}
+
+.user-form input:not(:placeholder-shown) {
+  background-color: #CFD7D4;
+}
+
+.user-form input:-webkit-autofill,
+.user-form input:-webkit-autofill:hover,
+.user-form input:-webkit-autofill:focus {
+  background-color: #889B94 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #889B94 inset;
+  transition: background-color 5000s ease-in-out 0s;  
+}
+
+.user-form button {
+  width: max(10em, 20%);
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #12372A;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
 .user-grid {
@@ -87,18 +132,18 @@ button:hover {
 .user-card h2 {
   font-size: 18px;
   margin-bottom: 5px;
-  color: #007bff;
+  color: #12372A;
 }
 
 .user-card p {
   font-size: 14px;
-  color: #555;
+  color: #12372A;
 }
 
 .loading {
   text-align: center;
   font-size: 16px;
-  color: #666;
+  color: #12372A;
 }
 
 .user-details {
@@ -109,9 +154,24 @@ button:hover {
   max-width: 600px;
   margin: 20px auto;
   text-align: center;
+  text-decoration: none;
 }
 
 .user-details h2 {
-  color: #007bff;
+  color: #12372A;
   margin-bottom: 10px;
+}
+
+.user-details p {
+  color: #12372A;
+  margin-bottom: 5px;
+}
+
+a.return {
+  color: #12372A;
+  text-decoration: none;
+}
+
+a.return:hover {
+  text-decoration: underline;
 }
