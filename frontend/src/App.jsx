@@ -1,35 +1,145 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import UserDetails from './UserDetails'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+function Home() {
+    const [users, setUsers] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [showForm, setShowForm] = useState(false)
+    const [newUser, setNewUser] = useState({
+        name: '',
+        email: '',
+        city: '',
+        company: '',
+        website: ''
+    })
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const fetchUsers = () => {
+        setLoading(true)
+        fetch('http://localhost:8080/api/users')
+            .then(res => res.json())
+            .then(data => {
+                setUsers(data)
+                setLoading(false)
+            })
+            .catch(err => {
+                console.error('Błąd pobierania danych:', err)
+                setLoading(false)
+            })
+    }
+
+    useEffect(() => {
+        fetchUsers()
+    }, [])
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target
+        setNewUser(prevState => ({
+            ...prevState,
+            [name]: value
+        }))
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        // Tutaj należy dodać kod wysyłający dane do backendu (np. metodą fetch/axios).
+        console.log('Dodawany użytkownik:', newUser)
+        setNewUser({
+            name: '',
+            email: '',
+            city: '',
+            company: '',
+            website: ''
+        })
+        setShowForm(false)
+    }
+
+    return (
+        <div className="wrapper">
+            <header>
+                <h1>Lista użytkowników</h1>
+                <p>Dane pobrane z backendu</p>
+                <button onClick={fetchUsers}>Odśwież dane</button>
+                <button onClick={() => setShowForm(prev => !prev)}>
+                    {showForm ? 'Anuluj' : 'Dodaj nowego użytkownika'}
+                </button>
+            </header>
+            {showForm && (
+                <form className="user-form" onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Imię i nazwisko"
+                        value={newUser.name}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        value={newUser.email}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="city"
+                        placeholder="Miasto"
+                        value={newUser.city}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="company"
+                        placeholder="Firma"
+                        value={newUser.company}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="website"
+                        placeholder="Strona internetowa"
+                        value={newUser.website}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <button type="submit">Dodaj użytkownika</button>
+                </form>
+            )}
+            {loading ? (
+                <p className="loading">Ładowanie użytkowników...</p>
+            ) : (
+                <div className="user-grid">
+                    {users.map(user => (
+                        <Link to={`/users/${user.id}`} key={user.id} className="user-card">
+                            <h2>{user.name}</h2>
+                            <p><strong>Email:</strong> {user.email}</p>
+                            <p><strong>Miasto:</strong> {user.address.city}</p>
+                            <p><strong>Firma:</strong> {user.company.name}</p>
+                            <a href={`http://${user.website}`} target="_blank" rel="noreferrer">
+                                Strona: {user.website}
+                            </a>
+                        </Link>
+                    ))}
+                </div>
+            )}
+        </div>
+    )
+}
+
+function App() {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/users/:id" element={<UserDetails />} />
+            </Routes>
+        </Router>
+    )
 }
 
 export default App
