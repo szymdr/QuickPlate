@@ -30,10 +30,11 @@ function UserDetails() {
 
     return (
         <div className="user-details">
-            {/* Przyjmujemy, że serializacja obejmuje pole "name" (getName()) */}
             <h2>{user.name}</h2>
             <p><strong>Email:</strong> {user.email}</p>
-            {/* Inne pola możesz dostosować do danych z bazy */}
+            <p><strong>Telefon:</strong> {user.phone}</p>
+            <p><strong>Data rejestracji:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
+
             <Link to="/">Powrót do listy użytkowników</Link>
         </div>
     )
