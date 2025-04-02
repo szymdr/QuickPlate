@@ -16,17 +16,18 @@ function Home() {
     })
 
     const fetchUsers = () => {
-        setLoading(true)
-        fetch('http://localhost:8080/api/users')
-            .then(res => res.json())
-            .then(data => {
-                setUsers(data)
-                setLoading(false)
-            })
-            .catch(err => {
-                console.error('Błąd pobierania danych:', err)
-                setLoading(false)
-            })
+      setLoading(true)
+      fetch('http://localhost:8080/api/users')
+          .then(res => res.json())
+          .then(data => {
+              console.log('Pobrani użytkownicy:', data)
+              setUsers(data)
+              setLoading(false)
+          })
+          .catch(err => {
+              console.error('Błąd pobierania danych:', err)
+              setLoading(false)
+          })
     }
 
     useEffect(() => {
@@ -116,13 +117,13 @@ function Home() {
                 <div className="user-grid">
                     {users.map(user => (
                         <Link to={`/users/${user.id}`} key={user.id} className="user-card">
-                            <h2>{user.name}</h2>
+                            <h2>{`${user.firstName} ${user.lastName}`}</h2>
                             <p><strong>Email:</strong> {user.email}</p>
-                            <p><strong>Miasto:</strong> {user.address.city}</p>
-                            <p><strong>Firma:</strong> {user.company.name}</p>
-                            <a href={`http://${user.website}`} target="_blank" rel="noreferrer">
-                                Strona: {user.website}
-                            </a>
+                            <p><strong>Telefon:</strong> {user.phone || 'Brak danych'}</p>
+                            <p>
+                                <strong>Data rejestracji:</strong>{' '}
+                                {user.createdAt ? new Date(user.createdAt).toLocaleString() : 'Brak daty'}
+                            </p>
                         </Link>
                     ))}
                 </div>
