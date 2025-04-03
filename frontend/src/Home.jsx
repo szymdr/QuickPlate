@@ -37,16 +37,19 @@ function Home() {
       fetchUsers()
   }, [])
 
+  const formatPhoneNumber = (phone) => {
+    return phone.match(/.{1,3}/g)?.join(" ") || "";
+  }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "phone") {
       let numericValue = value.replace(/\D/g, "");
       numericValue = numericValue.substring(0, 9);
-      const formatted = numericValue.match(/.{1,3}/g)?.join(" ") || "";
       
       setNewUser(prevState => ({
         ...prevState,
-        phone: formatted
+        phone: numericValue
       }));
     } else {
       setNewUser(prevState => ({
@@ -137,8 +140,7 @@ function Home() {
                       type="tel"
                       name="phone"
                       placeholder="Phone number"
-                      pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
-                      value={newUser.phone}
+                      value={formatPhoneNumber(newUser.phone)}
                       onChange={handleInputChange}
                   />
                   <button type="submit">Add user</button>
