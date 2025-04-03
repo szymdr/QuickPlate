@@ -22,6 +22,7 @@ body {
   padding: 1.5em;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
 }
 
 header {
@@ -38,7 +39,7 @@ h1 {
 }
 
 button.refresh-icon {
-  margin: 2em;
+  margin: 0 2em;
   background: none;
   color: #12372A;
   border: none;
@@ -99,7 +100,7 @@ button.add-user:hover {
 }
 
 .user-form button {
-  width: max(10em, 20%);
+  width: min(8em, 100%);
   padding: 10px;
   border: none;
   border-radius: 5px;
