@@ -1,56 +1,67 @@
 package com.quickplate.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
-import java.util.Map;
 
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import com.quickplate.model.Restaurant;
+import com.quickplate.repository.RestaurantRepository;
+
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/restaurants")
 public class RestaurantController {
-    
+
     @Autowired
     private RestaurantRepository restaurantRepository;
 
     @GetMapping
     public ResponseEntity<List<Restaurant>> getRestaurants() {
-        List<Restaurant> restaurants = restaurantRepository.findAll();
-        return ResponseEntity.ok(restaurants);
+        List<Restaurant> list = restaurantRepository.findAll();
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Restaurant> getRestaurantById(@PathVariable UUID id) {
-        Optional<Restaurant> restaurantOpt = restaurantRepository.findById(id);
-        if (restaurantOpt.isEmpty()) {
+    public ResponseEntity<?> getRestaurantById(@PathVariable UUID id) {
+        Optional<Restaurant> opt = restaurantRepository.findById(id);
+        if (opt.isEmpty()) {
             return ResponseEntity.status(404).body("Restaurant not found");
         }
-        return ResponseEntity.ok(restaurantOpt.get());
+        return ResponseEntity.ok(opt.get());
     }
 
     @PostMapping
     public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant restaurant) {
-        if(restaurant.getId() == null) {
+        if (restaurant.getId() == null) {
             restaurant.setId(UUID.randomUUID());
         }
-        Restaurant savedRestaurant = restaurantRepository.save(restaurant);
-        return ResponseEntity.created(URI.create("/api/restaurants/" + savedRestaurant.getId())).body(savedRestaurant);
+        Restaurant saved = restaurantRepository.save(restaurant);
+        return ResponseEntity
+            .created(URI.create("/api/restaurants/" + saved.getId()))
+            .body(saved);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Restaurant> updateRestaurant(@PathVariable UUID id, @RequestBody Restaurant restaurant) {
+    public ResponseEntity<?> updateRestaurant(@PathVariable UUID id, @RequestBody Restaurant restaurant) {
         if (!restaurantRepository.existsById(id)) {
             return ResponseEntity.status(404).body("Restaurant not found");
         }
         restaurant.setId(id);
-        Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
-        return ResponseEntity.ok(updatedRestaurant);
+        Restaurant updated = restaurantRepository.save(restaurant);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>> deleteRestaurant(@PathVariable UUID id) {
+    public ResponseEntity<String> deleteRestaurant(@PathVariable UUID id) {
         if (!restaurantRepository.existsById(id)) {
             return ResponseEntity.status(404).body("Restaurant not found");
         }
         restaurantRepository.deleteById(id);
         return ResponseEntity.ok("Restaurant deleted successfully");
+    }
 }
