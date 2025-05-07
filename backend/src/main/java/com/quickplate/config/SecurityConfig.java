@@ -32,6 +32,11 @@ public class SecurityConfig {
             .roles("ADMIN","USER")
             .build()
         );
+        uds.createUser(User.withUsername("user")
+            .password(encoder.encode("user"))
+            .roles("USER")
+            .build()
+        );
         return uds;
     }
 
