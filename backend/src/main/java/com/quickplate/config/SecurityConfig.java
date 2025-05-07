@@ -9,6 +9,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,7 +47,10 @@ public class SecurityConfig {
         http
           .csrf().disable()
           .authorizeHttpRequests(auth -> auth
-            .antMatchers("/api/auth/**","/health","/api/hello").permitAll()
+            .antMatchers(
+              "/api/auth/**","/health","/api/hello",
+              "/v3/api-docs/**","/api/docs/**","/swagger-ui/**"
+            ).permitAll()
             .antMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("USER","ADMIN")
             .antMatchers("/api/users/**").hasRole("ADMIN")
             .anyRequest().authenticated()
