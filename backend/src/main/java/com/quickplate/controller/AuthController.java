@@ -5,7 +5,6 @@ import com.quickplate.repository.UserRepository;
 import com.quickplate.security.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import java.net.URI;
 import java.util.Optional;
 
 @RestController
