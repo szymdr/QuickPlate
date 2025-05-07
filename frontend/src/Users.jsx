@@ -4,9 +4,11 @@ import { FiRefreshCw } from 'react-icons/fi'
 import UserDetails from './UserDetails'
 import './App.css'
 
+import './index.css'
+
 document.title = 'Users list ∙ QuickPlate'
 
-function Home() {
+function Users() {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -161,4 +163,4 @@ function Home() {
   )
 }
 
-export default Home
+export default Users

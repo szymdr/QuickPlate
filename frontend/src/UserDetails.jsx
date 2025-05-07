@@ -39,7 +39,7 @@ function UserDetails() {
             <p><strong>Phone number:</strong> {formatPhoneNumber(user.phone)}</p>
             <p><strong>Registration date:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
             <br />
-            <Link to="/" className='return'>Return to users list</Link>
+            <Link to="/users" className='return'>Return to users list</Link>
         </div>
     )
 }
