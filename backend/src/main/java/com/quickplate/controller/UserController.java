@@ -4,6 +4,7 @@ import com.quickplate.model.User;
 import com.quickplate.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -19,12 +20,14 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<User>> getUsers() {
          List<User> users = userRepository.findAll();
          return ResponseEntity.ok(users);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable UUID id) {
          Optional<User> userOpt = userRepository.findById(id);
@@ -34,6 +37,7 @@ public class UserController {
          return ResponseEntity.ok(userOpt.get());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
          if (user.getId() == null) {
@@ -43,6 +47,7 @@ public class UserController {
          return ResponseEntity.created(URI.create("/api/users/" + savedUser.getId())).body(savedUser);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable UUID id, @RequestBody User updatedUser) {
          if (!userRepository.existsById(id)) {
@@ -53,6 +58,7 @@ public class UserController {
          return ResponseEntity.ok(savedUser);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
          if (!userRepository.existsById(id)) {
