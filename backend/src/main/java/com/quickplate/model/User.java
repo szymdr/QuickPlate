@@ -30,8 +30,9 @@ public class User {
     @Column(length = 20)
     private String phone;
 
-    @Column(name = "account_type_id", nullable = false)
-    private UUID accountTypeId = UUID.fromString("f6a5e51f-1ee5-44a2-a55e-c7efd47db4da");
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_type_id", nullable = false)
+    private AccountType accountType;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -90,12 +91,12 @@ public class User {
         this.phone = phone;
     }
  
-    public UUID getAccountTypeId() {
-        return accountTypeId;
+    public AccountType getAccountType() {
+        return accountType;
     }
  
-    public void setAccountTypeId(UUID accountTypeId) {
-        this.accountTypeId = accountTypeId;
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
  
     public LocalDateTime getCreatedAt() {
