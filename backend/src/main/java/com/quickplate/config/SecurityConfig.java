@@ -49,7 +49,7 @@ public class SecurityConfig {
           .authorizeHttpRequests(auth -> auth
             .antMatchers(
               "/api/auth/**","/health","/api/hello",
-              "/v3/api-docs/**","/api/docs/**","/swagger-ui/**"
+              "/v3/api-docs/**","/api/docs/**","/api/swagger-ui/**"
             ).permitAll()
             .antMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("USER","ADMIN")
             .antMatchers("/api/users/**").hasRole("ADMIN")
