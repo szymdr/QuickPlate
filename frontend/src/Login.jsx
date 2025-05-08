@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import styles from "./Login.module.css";
 
@@ -7,6 +8,20 @@ document.title = "Log In ∙ QuickPlate";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const res = await fetch("http://localhost:8080/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) return alert("Nieudane logowanie");
+    const { token } = await res.json();
+    localStorage.setItem("token", token);
+    navigate("/users");
+  };
 
   return (
     <div className={styles.body}>
@@ -41,7 +56,9 @@ export default function LoginPage() {
             </div>
             <a href="#">Forgot Password</a>
           </div>
-          <button className={styles.loginButton}>Log In</button>
+          <button onClick={handleLogin} className={styles.loginButton}>
+            Log In
+          </button>
           <div className={styles.divider}>Or</div>
           <button className={styles.googleButton}>
             <FaGoogle className="mr-1" /> Sign in with Google

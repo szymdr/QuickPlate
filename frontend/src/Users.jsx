@@ -21,8 +21,14 @@ function Users() {
   })
 
   const fetchUsers = () => {
+    const token = localStorage.getItem("token");
     setLoading(true)
-    fetch('http://localhost:8080/api/users')
+    fetch('http://localhost:8080/api/users', {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
         .then(res => res.json())
         .then(data => {
             console.log('Fetched users:', data)
