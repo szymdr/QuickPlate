@@ -5,6 +5,8 @@ import com.quickplate.repository.UserRepository;
 import com.quickplate.security.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import java.util.Optional;
 
 @RestController
@@ -29,17 +31,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public TokenResponse login(@RequestBody LoginRequest req) {
-        Optional<User> opt = userRepo.findAll()
-          .stream()
-          .filter(u->u.getEmail().equals(req.email))
-          .findFirst();
-        if (opt.isEmpty() || !encoder.matches(req.password, opt.get().getPasswordHash())) {
-            throw new RuntimeException("Invalid credentials");
+    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest req) {
+        Optional<User> opt = userRepo.findByEmail(req.email());
+        if (opt.isEmpty() || !encoder.matches(req.password(), opt.get().getPasswordHash())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        User u = opt.get();
-        String jwt = jwtUtil.generateToken(u.getId(), "USER");
-        return new TokenResponse(jwt);
+        String jwt = jwtUtil.generateToken(opt.get().getId(), "USER");
+        return ResponseEntity.ok(new TokenResponse(jwt));
     }
 
     record LoginRequest(String email, String password) {}
