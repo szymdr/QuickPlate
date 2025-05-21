@@ -1,5 +1,8 @@
 package com.quickplate.controller;
 
+import com.quickplate.model.MenuItem;
+import com.quickplate.repository.MenuItemRepository;
+import com.quickplate.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +13,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.quickplate.model.Restaurant;
-import com.quickplate.repository.RestaurantRepository;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -19,6 +21,9 @@ public class RestaurantController {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private MenuItemRepository menuItemRepository;
 
     @GetMapping
     public ResponseEntity<List<Restaurant>> getRestaurants() {
@@ -63,5 +68,14 @@ public class RestaurantController {
         }
         restaurantRepository.deleteById(id);
         return ResponseEntity.ok("Restaurant deleted successfully");
+    }
+
+    @GetMapping("/{id}/menu")
+    public ResponseEntity<List<MenuItem>> getMenuByRestaurant(@PathVariable UUID id) {
+        if (!restaurantRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        List<MenuItem> menu = menuItemRepository.findByRestaurantId(id);
+        return ResponseEntity.ok(menu);
     }
 }
