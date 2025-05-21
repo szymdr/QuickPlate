@@ -24,7 +24,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className={styles.body}>
+    <div className={styles.loginPage}>
       <div className={styles.loginContainer}>
         <div className={styles.loginBox}>
           <div className="text-center mb-6">

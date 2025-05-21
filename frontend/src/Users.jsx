@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FiRefreshCw } from 'react-icons/fi'
-import UserDetails from './UserDetails'
-import './App.css'
-
-import './index.css'
+import styles from './Users.module.css'
 
 document.title = 'Users list ∙ QuickPlate'
 
@@ -100,72 +97,72 @@ function Users() {
   };
 
   return (
-      <div className="wrapper">
-          <header>
-              <h1>Users list</h1>
-              <button className="refresh-icon" onClick={fetchUsers}>
-                  <FiRefreshCw size={20} />
-              </button>
-              <button className="add-user" onClick={() => setShowForm(prev => !prev)}>
-                  {showForm ? 'Cancel' : 'Add User'}
-              </button>
-          </header>
-          {showForm && (
-              <form className="user-form" onSubmit={handleSubmit}>
-                  <input
-                      type="text"
-                      name="firstName"
-                      placeholder="First Name"
-                      value={newUser.firstName}
-                      onChange={handleInputChange}
-                      required
-                  />
-                  <input
-                      type="text"
-                      name="lastName"
-                      placeholder="Last Name"
-                      value={newUser.lastName}
-                      onChange={handleInputChange}
-                      required
-                  />
-                  <input
-                      type="email"
-                      name="email"
-                      placeholder="Email"
-                      value={newUser.email}
-                      onChange={handleInputChange}
-                      required
-                  />
-                  <input
-                      type="password"
-                      name="passwordHash"
-                      placeholder="Password"
-                      value={newUser.passwordHash}
-                      onChange={handleInputChange}
-                      required
-                  />
-                  <input
-                      type="tel"
-                      name="phone"
-                      placeholder="Phone number"
-                      value={formatPhoneNumber(newUser.phone)}
-                      onChange={handleInputChange}
-                  />
-                  <button type="submit">Add user</button>
-              </form>
-          )}
-          {loading ? (
-              <p className="loading">Loading users...</p>
-          ) : (
-              <div className="user-grid">
-                  {users.map(user => (
-                      <Link to={`/users/${user.id}`} key={user.id} className="user-card">
-                          <h2>{`${user.firstName} ${user.lastName}`}</h2>
-                      </Link>
-                  ))}
-              </div>
-          )}
-      </div>
+    <div className={styles.wrapper}>
+      <header className={styles.header}>
+        <h1>Users list</h1>
+        <button className={styles.refreshIcon} onClick={fetchUsers}>
+          <FiRefreshCw size={20} />
+        </button>
+        <button className={styles.addUser} onClick={() => setShowForm(prev => !prev)}>
+          {showForm ? 'Cancel' : 'Add User'}
+        </button>
+      </header>
+      {showForm && (
+          <form className="user-form" onSubmit={handleSubmit}>
+              <input
+                  type="text"
+                  name="firstName"
+                  placeholder="First Name"
+                  value={newUser.firstName}
+                  onChange={handleInputChange}
+                  required
+              />
+              <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Last Name"
+                  value={newUser.lastName}
+                  onChange={handleInputChange}
+                  required
+              />
+              <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={newUser.email}
+                  onChange={handleInputChange}
+                  required
+              />
+              <input
+                  type="password"
+                  name="passwordHash"
+                  placeholder="Password"
+                  value={newUser.passwordHash}
+                  onChange={handleInputChange}
+                  required
+              />
+              <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone number"
+                  value={formatPhoneNumber(newUser.phone)}
+                  onChange={handleInputChange}
+              />
+              <button type="submit">Add user</button>
+          </form>
+      )}
+      {loading ? (
+          <p className="loading">Loading users...</p>
+      ) : (
+          <div className="user-grid">
+              {users.map(user => (
+                  <Link to={`/users/${user.id}`} key={user.id} className="user-card">
+                      <h2>{`${user.firstName} ${user.lastName}`}</h2>
+                  </Link>
+              ))}
+          </div>
+      )}
+    </div>
   )
 }
 

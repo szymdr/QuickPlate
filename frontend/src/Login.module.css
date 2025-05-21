@@ -1,12 +1,12 @@
 /* Container tylko dla komponentu logowania */
 
 /* Ustawienia ogólne */
-body {
+.loginPage {
   margin: 0;
   font-family: 'Poppins', sans-serif;
   background-color: #F0F5FA;
   color: #12372A;
-  background: url('/public/login_background.jpg') no-repeat center center fixed;
+  background: url('/login_background.jpg') no-repeat center center fixed;
   background-size: cover;
   position: relative;
   display: flex;
@@ -16,7 +16,7 @@ body {
   overflow: hidden;
 }
 
-body::before {
+.loginPage::before {
   background: rgba(18, 55, 42, 0.5);
   z-index: -1;
   content: '';

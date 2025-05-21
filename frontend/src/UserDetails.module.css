@@ -1,0 +1,25 @@
+.userDetails {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
+  text-decoration: none;
+}
+.userDetails h2 {
+  color: #12372A;
+  margin-bottom: 10px;
+}
+.userDetails p {
+  color: #12372A;
+  margin-bottom: 5px;
+}
+.return {
+  color: #12372A;
+  text-decoration: none;
+}
+.return:hover {
+  text-decoration: underline;
+}
