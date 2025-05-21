@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import Navbar from './components/Navbar'
 import styles from './RestaurantPage.module.css'
 
 function RestaurantPage() {
@@ -66,59 +67,62 @@ function RestaurantPage() {
   }, {})
 
   return (
-    <div className={styles.restaurantPage}>
-      <div className={styles.pageContent}>
-        <div className={styles.layout}>
-          <div className={styles.menu}>
-            {Object.keys(grouped).map(cat => (
-              <div key={cat} className={styles.category}>
-                <h3>{cat}</h3>
-                {grouped[cat].map(item => (
-                  <div key={item.id} className={styles.item}>
-                    <div>
-                      <strong>{item.name}</strong>
-                      <p>{item.description}</p>
+    <>
+      <Navbar />
+      <div className={styles.restaurantPage}>
+        <div className={styles.pageContent}>
+          <div className={styles.layout}>
+            <div className={styles.menu}>
+              {Object.keys(grouped).map(cat => (
+                <div key={cat} className={styles.category}>
+                  <h3>{cat}</h3>
+                  {grouped[cat].map(item => (
+                    <div key={item.id} className={styles.item}>
+                      <div>
+                        <strong>{item.name}</strong>
+                        <p>{item.description}</p>
+                      </div>
+                      <div>
+                        <span>{Number(item.price).toFixed(2)} zł</span>
+                        <button onClick={() => addToCart(item)}>Dodaj</button>
+                      </div>
                     </div>
-                    <div>
-                      <span>{Number(item.price).toFixed(2)} zł</span>
-                      <button onClick={() => addToCart(item)}>Dodaj</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-
-          <div className={styles.cart}>
-            <h2>Koszyk</h2>
-            {cart.map(ci => (
-              <div key={ci.item.id} className={styles.cartItem}>
-                <span>{ci.item.name}</span>
-                <div className={styles.qtyControls}>
-                  <button onClick={() => updateQuantity(ci.item.id, -1)}>-</button>
-                  <span>{ci.quantity}</span>
-                  <button onClick={() => updateQuantity(ci.item.id,  1)}>+</button>
+                  ))}
                 </div>
-                <span>{(ci.item.price * ci.quantity).toFixed(2)} zł</span>
-                <button className={styles.remove} onClick={() => removeFromCart(ci.item.id)}>
-                  Usuń
-                </button>
-              </div>
-            ))}
+              ))}
+            </div>
 
-            <hr />
-            <p>
-              Suma:{' '}
-              {cart
-                .reduce((sum, ci) => sum + ci.item.price * ci.quantity, 0)
-                .toFixed(2)}{' '}
-              zł
-            </p>
-            <button className={styles.checkout}>Przejdź do rezerwacji</button>
+            <div className={styles.cart}>
+              <h2>Koszyk</h2>
+              {cart.map(ci => (
+                <div key={ci.item.id} className={styles.cartItem}>
+                  <span>{ci.item.name}</span>
+                  <div className={styles.qtyControls}>
+                    <button onClick={() => updateQuantity(ci.item.id, -1)}>-</button>
+                    <span>{ci.quantity}</span>
+                    <button onClick={() => updateQuantity(ci.item.id,  1)}>+</button>
+                  </div>
+                  <span>{(ci.item.price * ci.quantity).toFixed(2)} zł</span>
+                  <button className={styles.remove} onClick={() => removeFromCart(ci.item.id)}>
+                    Usuń
+                  </button>
+                </div>
+              ))}
+
+              <hr />
+              <p>
+                Suma:{' '}
+                {cart
+                  .reduce((sum, ci) => sum + ci.item.price * ci.quantity, 0)
+                  .toFixed(2)}{' '}
+                zł
+              </p>
+              <button className={styles.checkout}>Przejdź do rezerwacji</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

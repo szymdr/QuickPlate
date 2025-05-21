@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
+import Navbar from "./components/Navbar";
 import styles from "./Login.module.css";
 
-document.title = "Log In ∙ QuickPlate";
-
 export default function LoginPage() {
+  useEffect(() => {
+    document.title = "Log In ∙ QuickPlate";
+  }, []);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -20,10 +23,26 @@ export default function LoginPage() {
     if (!res.ok) return alert("Nieudane logowanie");
     const { token } = await res.json();
     localStorage.setItem("token", token);
-    navigate("/users");
+    // Check if the user is an admin
+    const userRes = await fetch("http://localhost:8080/api/users/me", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const userData = await userRes.json();
+    localStorage.setItem("user", JSON.stringify(userData));
+    if (userData.role === "admin") {
+      navigate("/users");
+    }
+    else {
+      navigate("/");
+    }
   };
 
   return (
+    <div className={styles.loginPageContainer}>
+    < Navbar />
     <div className={styles.loginPage}>
       <div className={styles.loginContainer}>
         <div className={styles.loginBox}>
@@ -68,6 +87,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
