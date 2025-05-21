@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import { FiRefreshCw } from 'react-icons/fi'
 import styles from './Users.module.css'
 
-document.title = 'Users list ∙ QuickPlate'
 
 function Users() {
+  useEffect(() => {
+    document.title = 'Users list ∙ QuickPlate'
+  }, [])
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)

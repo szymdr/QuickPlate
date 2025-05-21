@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Register.module.css";
 
-document.title = "Sign Up ∙ QuickPlate";
-
 export default function RegisterPage() {
+  useEffect(() => {
+    document.title = "Sign Up ∙ QuickPlate";
+  }, []);
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName]   = useState("");
   const [email, setEmail]         = useState("");
