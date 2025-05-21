@@ -1,7 +1,10 @@
-/* Container tylko dla komponentu logowania */
+.loginPageContainer {
+  height: 100vh;
+}
 
-/* Ustawienia ogólne */
+
 .loginPage {
+  width: 100%;
   margin: 0;
   font-family: 'Poppins', sans-serif;
   background-color: #F0F5FA;
@@ -11,9 +14,7 @@
   position: relative;
   display: flex;
   justify-content: flex-end;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  height: calc(100vh - 3em);
 }
 
 .loginPage::before {
@@ -31,7 +32,7 @@
   z-index: 2;
   display: flex;
   justify-content: flex-end;
-  height: 100vh;
+  height: 100%;
   width: 35vw;
 }
 
@@ -116,7 +117,6 @@
 /* Divider */
 .divider {
   text-align: center;
-  margin: 20px 0;
   color: #646982;
 }
 

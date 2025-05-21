@@ -74,6 +74,7 @@
 }
 
 .registerButton {
+  margin-top: 2em;
   width: 100%;
   padding: 15px;
   background: #12372A;
@@ -88,6 +89,5 @@
 
 .divider {
   text-align: center;
-  margin: 10px 0;
   color: #646982;
 }
