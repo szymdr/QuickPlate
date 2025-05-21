@@ -19,6 +19,7 @@ function HomePage() {
 
     const filtered = restaurants.filter(r =>
         r.name.toLowerCase().includes(search.toLowerCase())
+        || r.address.toLowerCase().includes(search.toLowerCase())
     )
 
     return (
