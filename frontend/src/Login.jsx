@@ -64,7 +64,7 @@ export default function LoginPage() {
             <FaGoogle className="mr-1" /> Sign in with Google
           </button>
           <div className={styles.signUp}>
-            Don't have an account? <a href="#">Sign Up</a>
+            Don't have an account? <a href="/register">Sign Up</a>
           </div>
         </div>
       </div>

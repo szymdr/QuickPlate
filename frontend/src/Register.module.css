@@ -1,0 +1,93 @@
+.registerPage {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: url('/login_background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.registerPage::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(18, 55, 42, 0.5);
+  z-index: -1;
+}
+
+.registerContainer {
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  width: 35vw;
+  height: 100vh;
+}
+
+.registerBox {
+  background: white;
+  padding: 40px;
+  border-radius: 30px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+.registerBox h2 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #12372A;
+}
+
+.registerBox p {
+  font-size: 16px;
+  color: #12372A;
+  opacity: 0.85;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.inputGroup label {
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #32343E;
+  margin-bottom: 5px;
+}
+.inputGroup input,
+.inputGroup select {
+  padding: 12px;
+  border: none;
+  background: #F0F5FA;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #12372A;
+}
+
+.registerButton {
+  width: 100%;
+  padding: 15px;
+  background: #12372A;
+  border: none;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.divider {
+  text-align: center;
+  margin: 10px 0;
+  color: #646982;
+}
