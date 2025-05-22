@@ -19,7 +19,7 @@
 
 .loginPage::before {
   background: rgba(18, 55, 42, 0.5);
-  z-index: -1;
+  z-index: 1;
   content: '';
   position: absolute;
   top: 0;
@@ -40,17 +40,19 @@
 /* Box logowania */
 .loginBox {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   background: white;
   padding: 40px;
-  border-radius: 30px 0 0 30px;
+  padding-top: 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Nagłówek */
 .loginBox h2 {
+  margin-top: 0;
   font-size: 30px;
   font-weight: 700;
   color: #12372A;
