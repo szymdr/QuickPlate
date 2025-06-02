@@ -3,6 +3,7 @@ package com.quickplate.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "order_items")
@@ -13,7 +14,8 @@ public class OrderItem {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name="order_id")
+    @JsonBackReference
     private Order order;
 
     @ManyToOne
@@ -61,5 +63,8 @@ public class OrderItem {
 
     public BigDecimal getPrice() {
         return price;
+    }
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
