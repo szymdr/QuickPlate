@@ -32,15 +32,17 @@ public class SecurityConfig {
           .authorizeHttpRequests(auth -> auth
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .antMatchers(
-              "/api/auth/**","/health","/api/hello",
-              "/v3/api-docs/**","/api/docs/**","/api/swagger-ui/**",
-              "/api/restaurants/**"
+              "/api/auth/**", "/health", "/api/hello",
+              "/v3/api-docs/**", "/api/docs/**", "/api/swagger-ui/**",
+              "/api/restaurants/**",
+              "/api/users/me"
             ).permitAll()
+            .antMatchers(HttpMethod.POST, "/api/reservations").hasAnyRole("USER", "ADMIN")
+            .antMatchers("/api/reservations/**", "/api/orders/**").hasAnyRole("USER", "ADMIN")
             .antMatchers("/api/users/**").hasRole("ADMIN")
             .anyRequest().authenticated()
           )
-          .addFilterBefore(jwtFilter,
-            UsernamePasswordAuthenticationFilter.class);
+          .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
