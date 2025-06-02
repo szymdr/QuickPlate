@@ -6,6 +6,7 @@ import Logout from './Logout';
 import HomePage from './HomePage';
 import RestaurantPage from './RestaurantPage';
 import RegisterPage from './Register';
+import ReservationPage from './ReservationPage';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
       <Route path="/logout" element={<Logout />} />
       <Route path="/users" element={<Users />} />
       <Route path="/users/:id" element={<UserDetails />} />
+      <Route path="/reservation" element={<ReservationPage />} />
+      <Route path="/reservation/:id" element={<ReservationPage />} />
     </Routes>
   );
 }

@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import styles from './RestaurantPage.module.css';
 
 function RestaurantPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const storageKey = `cart_${id}`;
 
   const [restaurant, setRestaurant] = useState(null);
@@ -180,7 +181,7 @@ function RestaurantPage() {
               </div>
               <button
                 className={styles.checkoutBtn}
-                onClick={() => alert('Checkout!')}
+                onClick={() => navigate(`/reservation/${id}`, { state: { cart } })}
               >
                 Checkout
               </button>

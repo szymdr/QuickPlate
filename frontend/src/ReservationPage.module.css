@@ -1,0 +1,226 @@
+.wrapper {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+input {
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+}
+
+button {
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.success {
+    margin-top: 1rem;
+    color: green;
+    font-weight: bold;
+}
+
+.reservationPage {
+  position: relative;
+  display: flex;
+  height: calc(100vh - 3em);
+  background: url('/login_background.jpg') center/cover fixed;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+.reservationPage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(18,55,42,0.5);
+  z-index: 1;
+}
+
+.reservationWrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  max-width: 900px;
+  margin: auto;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.cartSidebar {
+  flex: 1;
+  width: 50vw;
+  background: #fff;
+  color: #000;
+  padding: 1.5rem;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.cartSidebar     {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+.cartSidebar h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  color: #12372A;
+}
+.cartSidebar .cartItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+.cartSidebar .cartItem span:first-child {
+  flex: 1;
+  font-size: 0.95rem;
+  margin-right: 1rem;
+}
+.cartSidebar .cartItem span:last-child {
+  white-space: nowrap;
+}
+.cartSidebar .cartSummary {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.formContainer {
+  flex: 2;
+  padding: 1.5rem;
+  background: inherit;
+}
+
+.formBox {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 6px #0000001a;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+.formBox h2 {
+  margin: 0;
+  color: #12372A;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.inputGroup label {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #12372A;
+  text-transform: uppercase;
+}
+.inputGroup input {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  background: #F0F5FA;
+  border-radius: 0.5rem;
+  color: #12372A;
+}
+
+.inputGroup select {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-size: 0.65rem;
+  border: none;
+  border-radius: 0.5rem;
+  appearance: none;
+  cursor: pointer;
+  overflow-y: auto;
+  max-height: calc((1.75rem + 0.5rem) * 6);
+}
+
+.inputGroup select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(18,55,42,0.3);
+}
+
+.submitBtn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: #0f2e23;
+  color: #fff;
+  font-size: 1rem;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.submitBtn:hover {
+  background: #315240;
+}
+
+.success {
+  margin-top: 1rem;
+  color: #0f2e23;
+  font-weight: bold;
+}
+
+.timePickerContainer {
+  position: relative;
+}
+.timeInput {
+  width: 100%;
+  padding: 0.75rem;
+  background: #F0F5FA;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  color: #12372A;
+}
+.timeList {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  margin: 0;
+  padding: 0.25rem 0;
+  list-style: none;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 0.5rem;
+  overflow-y: auto;
+  z-index: 10;
+}
+.timeOption {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: #12372A;
+  cursor: pointer;
+}
+.timeOption:hover {
+  background: #F0F5FA;
+}
