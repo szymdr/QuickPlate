@@ -7,6 +7,8 @@ import HomePage from './HomePage';
 import RestaurantPage from './RestaurantPage';
 import RegisterPage from './Register';
 import ReservationPage from './ReservationPage';
+import PaymentPage from './PaymentPage';
+import ProfilePage from './ProfilePage';
 
 function App() {
   return (
@@ -20,6 +22,9 @@ function App() {
       <Route path="/users/:id" element={<UserDetails />} />
       <Route path="/reservation" element={<ReservationPage />} />
       <Route path="/reservation/:id" element={<ReservationPage />} />
+      <Route path="/payment" element={<PaymentPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
+
     </Routes>
   );
 }

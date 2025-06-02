@@ -1,0 +1,43 @@
+.profilePage {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+}
+.profileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.profileForm label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+}
+.profileForm input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.profileForm button {
+  padding: 0.75rem;
+  background: #12372A;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.resList {
+  list-style: none;
+  padding: 0;
+}
+.resList li {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #F0F5FA;
+  border-radius: 4px;
+}
