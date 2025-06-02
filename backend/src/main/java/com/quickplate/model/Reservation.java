@@ -60,4 +60,16 @@ public class Reservation {
     public int getTableNumber() {
         return tableNumber;
     }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+    
+    public LocalDateTime getReservationTime() {
+        return reservationTime;
+    }
+
+    public void setReservationTime(LocalDateTime reservationTime) {
+        this.reservationTime = reservationTime;
+    }
 }

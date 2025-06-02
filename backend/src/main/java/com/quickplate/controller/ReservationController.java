@@ -1,15 +1,23 @@
 package com.quickplate.controller;
 
 import com.quickplate.model.Reservation;
+import com.quickplate.model.Restaurant;
+import com.quickplate.model.User;
 import com.quickplate.repository.ReservationRepository;
+import com.quickplate.repository.RestaurantRepository;
+import com.quickplate.repository.UserRepository;
+import com.quickplate.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.time.LocalDateTime;
+
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -18,6 +26,12 @@ public class ReservationController {
 
     @Autowired
     private ReservationRepository repo;
+
+    @Autowired
+    private UserRepository userRepo;
+
+    @Autowired
+    private RestaurantRepository restaurantRepo;
 
     @GetMapping
     public ResponseEntity<List<Reservation>> getAll() {
@@ -33,9 +47,39 @@ public class ReservationController {
         return ResponseEntity.ok(opt.get());
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Reservation>> getByUserId(@PathVariable UUID userId) {
+        User user = userRepo.findById(userId)
+          .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        List<Reservation> reservations = repo.findByUser(user);
+        return ResponseEntity.ok(reservations);
+    }
+
+    record ReservationReq(
+      UUID restaurantId,
+      int tableNumber,
+      LocalDateTime reservationTime
+    ) {}
+
     @PostMapping
-    public ResponseEntity<Reservation> create(@RequestBody Reservation r) {
-        if (r.getId() == null) r.setId(UUID.randomUUID());
+    public ResponseEntity<Reservation> create(
+        @RequestBody ReservationReq req,
+        Principal principal
+    ) {
+        UUID userId = UUID.fromString(principal.getName());
+        User current = userRepo.findById(userId)
+          .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Restaurant rest = restaurantRepo.findById(req.restaurantId())
+          .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found"));
+
+        Reservation r = new Reservation();
+        r.setId(UUID.randomUUID());
+        r.setUser(current);
+        r.setRestaurant(rest);
+        r.setTableNumber(req.tableNumber());
+        r.setReservationTime(req.reservationTime());
+
         Reservation saved = repo.save(r);
         return ResponseEntity
             .created(URI.create("/api/reservations/" + saved.getId()))
