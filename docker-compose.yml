@@ -37,18 +37,6 @@ services:
     networks:
       - quickplate_network
 
-  frontend:
-    container_name: react-frontend
-    build:
-      context: ./frontend
-    environment:
-      - WATCHPACK_POLLING=true
-    ports:
-      - "3000:3000"
-      - "3010:3010"
-    depends_on:
-      - backend
-
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: 'rabbitmq'
