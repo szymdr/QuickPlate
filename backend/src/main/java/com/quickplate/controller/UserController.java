@@ -1,5 +1,6 @@
 package com.quickplate.controller;
 
+import com.quickplate.exception.ResourceNotFoundException;
 import com.quickplate.model.User;
 import com.quickplate.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,5 +68,35 @@ public class UserController {
          }
          userRepository.deleteById(id);
          return ResponseEntity.ok("User deleted");
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser(Principal principal) {
+        // Principal.getName() should be the userId (as set by your JWT filter)
+        UUID userId = UUID.fromString(principal.getName());
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        user.setPasswordHash(null);   // don’t send password back
+        return ResponseEntity.ok(user);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<User> updateUser(
+        @PathVariable UUID id,
+        @RequestBody User updates,
+        Principal principal
+    ) {
+        UUID me = UUID.fromString(principal.getName());
+        if (!me.equals(id)) {
+            return ResponseEntity.status(403).build();
+        }
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        user.setFirstName(updates.getFirstName());
+        user.setLastName(updates.getLastName());
+        user.setEmail(updates.getEmail());
+        User saved = userRepository.save(user);
+        saved.setPasswordHash(null);
+        return ResponseEntity.ok(saved);
     }
 }

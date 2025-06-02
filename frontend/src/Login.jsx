@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import Navbar from "./components/Navbar";
 import styles from "./Login.module.css";
@@ -12,6 +12,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirect = location.state?.redirectTo;
+  const redirectState = {
+    cart: location.state?.cart,
+    dateTime: location.state?.dateTime,
+    guests: location.state?.guests
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -21,23 +28,24 @@ export default function LoginPage() {
       body: JSON.stringify({ email, password }),
     });
     if (!res.ok) return alert("Nieudane logowanie");
-    const { token } = await res.json();
-    localStorage.setItem("token", token);
-    // Check if the user is an admin
-    const userRes = await fetch("http://localhost:8080/api/users/me", {
+    const data = await res.json();              // { token: "…" }
+    localStorage.setItem('token', data.token);
+
+    // now fetch the current user
+    const meRes = await fetch('http://localhost:8080/api/users/me', {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+        'Authorization': `Bearer ${data.token}`   // <-- MUST include the token
+      }
     });
-    const userData = await userRes.json();
-    localStorage.setItem("user", JSON.stringify(userData));
-    if (userData.role === "admin") {
-      navigate("/users");
+    if (!meRes.ok) {
+      const err = await meRes.text();
+      return alert('Nie udało się pobrać profilu: ' + err);
     }
-    else {
-      navigate("/");
-    }
+    const me = await meRes.json();               // { id, firstName, … }
+    localStorage.setItem('user', JSON.stringify(me));
+
+    // finally navigate away
+    navigate('/');
   };
 
   return (
