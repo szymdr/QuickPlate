@@ -28,7 +28,6 @@ export default function ReservationPage() {
   const [timeOpen, setTimeOpen] = useState(false);
   const listRef = useRef();
 
-  // zamykanie dropdownu click poza
   useEffect(() => {
     const onClick = e => {
       if (timeOpen && listRef.current && !listRef.current.contains(e.target)) {
@@ -48,36 +47,69 @@ export default function ReservationPage() {
     }
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    const dateTime = `${date}T${time}`;
-    const cartState = { cart: reservedCart, dateTime, guests };
 
+    const dateTime = `${date}T${time}`;
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/login', { state: { redirectTo: '/payment', ...cartState } });
+      navigate('/login', {
+        state: { redirectTo: '/payment', cart: reservedCart, dateTime, guests }
+      });
       return;
     }
 
-    fetch('/api/reservations', {
+    const res = await fetch('http://localhost:8080/api/reservations', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ time: dateTime, guests })
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Reservation failed');
-        return res.json();
+      body: JSON.stringify({
+        restaurantId: id,
+        tableNumber: guests,
+        reservationTime: dateTime
       })
-      .then(() => {
-        navigate('/payment', { state: cartState });
+    });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      let errBody;
+      try {
+        errBody = JSON.parse(txt);
+      } catch {
+        errBody = { error: txt };
+      }
+      console.error('Reservation error:', errBody);
+      return alert('Błąd rezerwacji: ' + (errBody.error || txt));
+    }
+
+    const reservation = await res.json();
+    const reservationId = reservation.id;
+
+    const orderRes = await fetch('http://localhost:8080/api/orders/with-items', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        reservationId,
+        items: reservedCart.map(ci => ({
+          menuItemId: ci.item.id,
+          quantity: ci.quantity
+        }))
       })
-      .catch(err => {
-        console.error(err);
-        alert('Błąd rezerwacji');
-      });
+    });
+
+    if (!orderRes.ok) {
+      const err = await orderRes.text();
+      console.error('Order error:', err);
+      return alert('Błąd zapisu zamówienia: ' + err);
+    }
+
+    const { id: orderId } = await orderRes.json();
+    navigate("/payment", { state: { cart: reservedCart, dateTime, guests, orderId } });
   };
 
   return (
