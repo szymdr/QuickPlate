@@ -34,10 +34,49 @@
 .resList {
   list-style: none;
   padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1.5rem;
 }
-.resList li {
+.resList .resItem {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   padding: 1rem;
-  margin-bottom: 1rem;
-  background: #F0F5FA;
-  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.2s;
+} 
+.resList li strong {
+  color: #12372A;
+  font-size: 1.1rem;
+}
+.resList li p,
+.resList li span {
+  margin: 0.25rem 0;
+  color: #4a4a4a;
+  font-size: 0.95rem;
+}
+.orderDetails {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e0e0e0;
+}
+.orderDetails h4 {
+  margin: 0 0 0.5rem;
+  color: #12372A;
+  font-size: 1rem;
+}
+.orderDetails ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.orderDetails li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.orderDetails li:last-child {
+  border-bottom: none;
 }

@@ -41,6 +41,7 @@ export default function ProfilePage() {
             const order = orRes.ok ? await orRes.json() : null;
             return {
               ...r,
+              status: order?.status ?? r.status,
               totalPrice: order?.totalPrice,
               orderItems: order?.items
             };
@@ -128,7 +129,7 @@ export default function ProfilePage() {
         <h3>Moje rezerwacje ({reservations.length})</h3>
         <ul className={styles.resList}>
           {reservations.map(r => (
-            <li key={r.id} onClick={() => toggle(r.id)}>
+            <li key={r.id} onClick={() => toggle(r.id)} className={styles.resItem}>
               <strong>{r.restaurant?.name || '–'}</strong><br/>
               Data: {r.reservationTime.replace('T',' ')}<br/>
               Stolik: {r.tableNumber}<br/>
