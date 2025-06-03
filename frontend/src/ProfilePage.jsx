@@ -18,8 +18,27 @@ export default function ProfilePage() {
     phone:     user?.phone     || ''
   });
   const [expandedId, setExpandedId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:8080/api/users/${user.id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
+      .then(data => {
+        setUser(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+
     if (!token || !user?.id) {
       navigate('/login', { state: { redirectTo: '/profile' } });
       return;
@@ -81,25 +100,50 @@ export default function ProfilePage() {
 
   const handleSave = async e => {
     e.preventDefault();
-    const res = await fetch(
-      `http://localhost:8080/api/users/${user.id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(form)
+
+    const payload = {
+      firstName: form.firstName,
+      lastName:  form.lastName,
+      email:     form.email,
+      phone:     form.phone,
+      accountType: { id: user.accountType.id }
+    };
+
+    try {
+      const res = await fetch(
+        `http://localhost:8080/api/users/${user.id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept':       'application/json',
+            Authorization:  `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        }
+      );
+
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error('Profile update failed:', errText);
+        return alert('Błąd aktualizacji profilu: ' + errText);
       }
-    );
-    if (!res.ok) {
-      const err = await res.text();
-      return alert('Błąd aktualizacji profilu: ' + err);
+
+      const updated = await res.json();
+      setUser(updated);
+      setForm({
+        firstName: updated.firstName || '',
+        lastName:  updated.lastName  || '',
+        email:     updated.email     || '',
+        phone:     updated.phone     || ''
+      });
+      localStorage.setItem('user', JSON.stringify(updated));
+      alert('Dane zaktualizowane');
+
+    } catch (err) {
+      console.error('Unexpected error updating profile:', err);
+      alert('Nieoczekiwany błąd podczas aktualizacji profilu');
     }
-    const updated = await res.json();
-    localStorage.setItem('user', JSON.stringify(updated));
-    setUser(updated);
-    alert('Dane zaktualizowane');
   };
 
   const cancelReservation = async r => {
@@ -121,6 +165,8 @@ export default function ProfilePage() {
       alert('Nie udało się anulować');
     }
   };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <>

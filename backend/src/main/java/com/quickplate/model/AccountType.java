@@ -13,8 +13,6 @@ public class AccountType {
 
     @Column(unique = true, nullable = false, length = 50)
     private String name;
-
-    // Gettery i Settery
     
     public UUID getId() {
         return id;

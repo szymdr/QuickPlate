@@ -62,8 +62,7 @@ function RestaurantPage() {
     acc[item.category].push(item);
     return acc;
   }, {});
-
-  // zmienia ilość lub usuwa pozycję jeśli qty ≤ 0
+  
   const updateCartItem = (itemId, delta) => {
     setCart(prev =>
       prev.flatMap(ci => {

@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import styles from './MenuManagement.module.css';
 
 export default function MenuManagement() {
-  const { id } = useParams(); // restaurant id
+  const { id } = useParams();
   const token = localStorage.getItem('token');
   const [menu, setMenu] = useState([]);
 
@@ -16,7 +16,6 @@ export default function MenuManagement() {
       .then(setMenu);
   }, [id, token]);
 
-  // group items by category name
   const grouped = menu.reduce((acc, mi) => {
     const cat = mi.category?.name || 'Bez kategorii';
     acc[cat] = acc[cat] || [];

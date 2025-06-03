@@ -30,7 +30,6 @@ function Users() {
     })
         .then(res => res.json())
         .then(data => {
-            console.log('Fetched users:', data)
             setUsers(data)
             setLoading(false)
         })
@@ -82,7 +81,6 @@ function Users() {
         return res.json();
     })
     .then((data) => {
-        console.log('User added:', data);
         setNewUser({
             firstName: '',
             lastName: '',

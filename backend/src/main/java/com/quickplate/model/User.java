@@ -40,8 +40,6 @@ public class User {
     public User() {
         this.createdAt = LocalDateTime.now();
     }
-    
-    // Getters i setters ...
 
     public UUID getId() {
         return id;

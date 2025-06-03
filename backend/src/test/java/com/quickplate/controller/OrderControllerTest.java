@@ -1,7 +1,6 @@
 package com.quickplate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.quickplate.security.JwtAuthenticationFilter;    // add this import
 import com.quickplate.model.*;
 import com.quickplate.repository.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,19 +61,16 @@ class OrderControllerTest {
         OrderItem orderItem = new OrderItem();
         orderItem.setMenuItem(menuItem);
         orderItem.setQuantity(2);
-        // initialize and add orderItem via correct property 'items'
         if (sample.getItems() == null) {
             sample.setItems(new ArrayList<>());
         }
         sample.getItems().add(orderItem);
 
-        // stub
         given(orderRepo.findAll()).willReturn(List.of(sample));
         given(orderRepo.findById(orderId)).willReturn(Optional.of(sample));
         given(reservationRepo.findById(reservation.getId())).willReturn(Optional.of(reservation));
         given(menuItemRepo.findById(menuItem.getId())).willReturn(Optional.of(menuItem));
         given(orderRepo.existsById(orderId)).willReturn(true);
-        // stub user lookup for createWithItems (principal → userRepo)
         User dummyUser = new User();
         dummyUser.setId(reservation.getId());
         given(userRepo.findById(reservation.getId()))
@@ -176,7 +172,6 @@ class OrderControllerTest {
 
     @Test @DisplayName("PUT /api/orders/{id}/next-status → 200")
     void updateNextStatus_ok() throws Exception {
-        // assume next-status logic increments status
         mvc.perform(put("/api/orders/{id}/next-status", orderId))
            .andExpect(status().isOk());
     }

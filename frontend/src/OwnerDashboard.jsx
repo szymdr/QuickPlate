@@ -83,7 +83,6 @@ export default function OwnerDashboard() {
                 { headers: { Authorization: `Bearer ${token}` } }
               );
               if (!or.ok) {
-                // no order yet for this reservation
                 return { ...r, orderId: null, status: null, total: null, orderItems: [] };
               }
               const order = await or.json();

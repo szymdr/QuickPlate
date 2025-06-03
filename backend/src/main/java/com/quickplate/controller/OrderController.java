@@ -35,7 +35,6 @@ public class OrderController {
     @Autowired private MenuItemRepository menuItemRepo;
     @Autowired private OrderRepository orderRepo;
 
-    // DTOs for the request
     record OrderItemReq(UUID menuItemId, int quantity) {}
     record OrderWithItemsReq(UUID reservationId, List<OrderItemReq> items) {}
     record IdResp(UUID id) {}
@@ -126,7 +125,6 @@ public class OrderController {
         return ResponseEntity.ok().build();
     }
 
-    // replace the Map<String,String> binding:
     record StatusReq(String status) {}
 
     @PatchMapping("/{id}/status")

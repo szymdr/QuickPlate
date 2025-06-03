@@ -3,7 +3,7 @@ package com.quickplate.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quickplate.model.User;
 import com.quickplate.repository.UserRepository;
-import com.quickplate.security.JwtAuthenticationFilter;    // <<– add this
+import com.quickplate.security.JwtAuthenticationFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
