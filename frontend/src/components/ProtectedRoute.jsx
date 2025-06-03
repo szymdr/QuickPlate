@@ -1,22 +1,15 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, replace } from 'react-router-dom';
 
-export default function ProtectedRoute({ children, role, redirectTo = '/login' }) {
-  const user = JSON.parse(localStorage.getItem('user')||'null');
+const ProtectedRoute = ({ role, navigateTo = '/login', children }) => {
+  const user = JSON.parse(localStorage.getItem('user'));
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to={navigateTo} replace />;
   }
-
-  if (role) {
-    if (Array.isArray(user.roles)) {
-      if (!user.roles.includes(role)) return <Navigate to={redirectTo} replace />;
-    }
-    else if (user.role) {
-      if (user.role !== role) return <Navigate to={redirectTo} replace />;
-    }
-    else if (user.accountTypeId != null) {
-      if (user.accountTypeId !== role) return <Navigate to={redirectTo} replace />;
-    }
+  if (role && user.accountType?.name !== role) {
+    return <Navigate to={navigateTo} replace />;
   }
   return children;
-}
+};
+
+export default ProtectedRoute;

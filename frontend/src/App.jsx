@@ -61,7 +61,11 @@ function App() {
           <EditMenuItem/>
         </ProtectedRoute>
       }/>
-      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/admin" element={
+        <ProtectedRoute role="ADMIN" navigateTo="/">
+          <AdminDashboard />
+        </ProtectedRoute>
+      }/>
     </Routes>
   );
 }
