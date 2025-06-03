@@ -1,0 +1,48 @@
+.dashboard {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.dashboard h2 {
+  color: #12372A;
+  margin-bottom: 1.5rem;
+}
+.adminSection {
+  margin-bottom: 2rem;
+}
+.adminSection h3 {
+  color: #12372A;
+  margin-bottom: 0.75rem;
+}
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+.dataTable th,
+.dataTable td {
+  border: 1px solid #E2E8F0;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.dataTable th {
+  background: #F7FAFC;
+  font-weight: 600;
+}
+.dataTable tbody tr:nth-child(even) {
+  background: #FAFBFD;
+}
+.dataTable button {
+  background: #12372A;
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.dataTable button:hover {
+  background: #0f2e23;
+}

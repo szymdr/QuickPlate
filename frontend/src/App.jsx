@@ -14,6 +14,7 @@ import OwnerDashboard from './OwnerDashboard';
 import EditRestaurant from './EditRestaurant';
 import MenuManagement from './MenuManagement';
 import EditMenuItem from './EditMenuItem';
+import AdminDashboard from './AdminDashboard';
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
           <EditMenuItem/>
         </ProtectedRoute>
       }/>
+      <Route path="/admin" element={<AdminDashboard />} />
     </Routes>
   );
 }
