@@ -5,6 +5,7 @@ import styles from "./Navbar.module.css";
 
 export default function Navbar() {
   const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user") || "null");
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,13 +31,19 @@ export default function Navbar() {
       <ul className={styles.links}>
         {token ? (
           <>
+            {(user.role === "RESTAURANT_OWNER" ||
+              user.accountType.name === "RESTAURANT_OWNER") && (
+              <li>
+                <Link to="/owner">Owner Dashboard</Link>
+              </li>
+            )}
+            {(user.role === "USER" || user.accountType.name === "USER") && (
+              <li>
+                <Link to="/profile">Profile</Link>
+              </li>
+            )}
             <li>
-              <Link to="/profile">Profile</Link>
-            </li>
-            <li>
-              <button onClick={handleLogout} className={styles.logoutBtn}>
-                Log Out
-              </button>
+              <Link to="/logout">Log Out</Link>
             </li>
           </>
         ) : (
