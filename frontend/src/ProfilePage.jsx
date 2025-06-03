@@ -14,7 +14,8 @@ export default function ProfilePage() {
   const [form, setForm] = useState({
     firstName: user?.firstName || '',
     lastName:  user?.lastName  || '',
-    email:     user?.email     || ''
+    email:     user?.email     || '',
+    phone:     user?.phone     || ''
   });
   const [expandedId, setExpandedId] = useState(null);
 
@@ -63,8 +64,19 @@ export default function ProfilePage() {
   };
 
   const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    if (e.target.name === "phone") {
+      let numericValue = e.target.value.replace(/\D/g, "");
+      numericValue = numericValue.substring(0, 9);
+      
+      setForm({ ...form, [e.target.name]: numericValue });
+    } else {
+      setForm({ ...form, [e.target.name]: e.target.value });
+    }
   };
+
+  const formatPhoneNumber = (phone) => {
+    return phone.match(/.{1,3}/g)?.join(" ") || "";
+  }
 
   const handleSave = async e => {
     e.preventDefault();
@@ -121,6 +133,15 @@ export default function ProfilePage() {
               value={form.email}
               onChange={handleChange}
               required
+            />
+          </label>
+          <label>
+            Telefon
+            <input
+              name="phone"
+              type="tel"
+              value={formatPhoneNumber(form.phone)}
+              onChange={handleChange}
             />
           </label>
           <button type="submit">Zapisz zmiany</button>

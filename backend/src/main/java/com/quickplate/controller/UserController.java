@@ -76,7 +76,7 @@ public class UserController {
         UUID userId = UUID.fromString(principal.getName());
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        user.setPasswordHash(null);   // don’t send password back
+        user.setPasswordHash(null);
         return ResponseEntity.ok(user);
     }
 
@@ -95,6 +95,7 @@ public class UserController {
         user.setFirstName(updates.getFirstName());
         user.setLastName(updates.getLastName());
         user.setEmail(updates.getEmail());
+        user.setPhone(updates.getPhone());
         User saved = userRepository.save(user);
         saved.setPasswordHash(null);
         return ResponseEntity.ok(saved);
