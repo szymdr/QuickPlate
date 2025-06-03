@@ -13,11 +13,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const redirect = location.state?.redirectTo;
+  const redirectTo = location.state?.redirectTo;
   const redirectState = {
-    cart: location.state?.cart,
-    dateTime: location.state?.dateTime,
-    guests: location.state?.guests
+    cart:      location.state?.cart,
+    dateTime:  location.state?.dateTime,
+    guests:    location.state?.guests
   };
 
   const handleLogin = async (e) => {
@@ -31,10 +31,9 @@ export default function LoginPage() {
     const data = await res.json();              // { token: "…" }
     localStorage.setItem('token', data.token);
 
-    // now fetch the current user
     const meRes = await fetch('http://localhost:8080/api/users/me', {
       headers: {
-        'Authorization': `Bearer ${data.token}`   // <-- MUST include the token
+        'Authorization': `Bearer ${data.token}`
       }
     });
     if (!meRes.ok) {
@@ -44,8 +43,15 @@ export default function LoginPage() {
     const me = await meRes.json();               // { id, firstName, … }
     localStorage.setItem('user', JSON.stringify(me));
 
-    // finally navigate away
-    navigate('/');
+    if (redirectTo) {
+      return navigate(redirectTo, { replace: true, state: redirectState });
+    }
+
+    if (me.accountType.name === 'RESTAURANT_OWNER') {
+      navigate('/owner', { replace: true });
+    } else {
+      navigate('/', { replace: true });
+    }
   };
 
   return (
