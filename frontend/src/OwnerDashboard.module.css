@@ -1,0 +1,50 @@
+.dashboard {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.dashboard h2 {
+  color: #12372A;
+  margin-bottom: 1rem;
+}
+.addLink {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem;
+  background: #0f2e23;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.addLink:hover {
+  background: #0d271d;
+}
+.resList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+.resList li {
+  background: #F9FAFB;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.resList li a {
+  margin-left: 0.5rem;
+  color: #12372A;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.resList li a:hover {
+  text-decoration: underline;
+}
