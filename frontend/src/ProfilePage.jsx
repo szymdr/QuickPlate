@@ -42,7 +42,8 @@ export default function ProfilePage() {
             const order = orRes.ok ? await orRes.json() : null;
             return {
               ...r,
-              status: order?.status ?? r.status,
+              orderId: order?.id,
+              status:    order?.status    ?? r.status,
               totalPrice: order?.totalPrice,
               orderItems: order?.items
             };
@@ -101,9 +102,29 @@ export default function ProfilePage() {
     alert('Dane zaktualizowane');
   };
 
+  const cancelReservation = async r => {
+    if (!window.confirm('Anulować rezerwację?')) return;
+    if (!r.orderId) return alert('Brak zamówienia do anulowania');
+    const res = await fetch(
+      `http://localhost:8080/api/orders/${r.orderId}`,
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type':'application/json', Authorization:`Bearer ${token}` },
+        body: JSON.stringify({ status: 'CANCELLED' })
+      }
+    );
+    if (res.ok) {
+      setReservations(prev =>
+        prev.map(x => x.id === r.id ? { ...x, status: 'CANCELLED' } : x)
+      );
+    } else {
+      alert('Nie udało się anulować');
+    }
+  };
+
   return (
     <>
-      <Navbar />
+      <Navbar/>
       <div className={styles.profilePage}>
         <h2>Mój profil</h2>
         <form className={styles.profileForm} onSubmit={handleSave}>
@@ -150,14 +171,29 @@ export default function ProfilePage() {
         <h3>Moje rezerwacje ({reservations.length})</h3>
         <ul className={styles.resList}>
           {reservations.map(r => (
-            <li key={r.id} onClick={() => toggle(r.id)} className={styles.resItem}>
-              <strong>{r.restaurant?.name || '–'}</strong><br/>
+            <li
+              key={r.id}
+              className={styles.resItem}
+              onClick={() => toggle(r.id)}
+            >
+              <strong>{r.restaurant?.name}</strong><br/>
               Data: {r.reservationTime.replace('T',' ')}<br/>
               Stolik: {r.tableNumber}<br/>
               Status: {r.status}<br/>
               Cena: {r.totalPrice != null
-                ? `${r.totalPrice.toFixed(2)} zł`
-                : '–'}<br/>
+                ? `${r.totalPrice.toFixed(2)} zł` : '–'}<br/>
+
+              {(r.status==='pending' || r.status==='paid' || r.status==='accepted') && (
+                <button
+                  className={styles.cancelBtn}
+                  onClick={e => {
+                    e.stopPropagation();
+                    cancelReservation(r);
+                  }}
+                >
+                  Anuluj rezerwację
+                </button>
+              )}
 
               {expandedId === r.id && r.orderItems && (
                 <div className={styles.orderDetails}>
@@ -165,9 +201,8 @@ export default function ProfilePage() {
                   <ul>
                     {r.orderItems.map(oi => (
                       <li key={oi.id}>
-                        {oi.menuItem.name} ×{oi.quantity} = {(
-                          oi.price * oi.quantity
-                        ).toFixed(2)} zł
+                        {oi.menuItem.name} ×{oi.quantity} ={' '}
+                        {(oi.price * oi.quantity).toFixed(2)} zł
                       </li>
                     ))}
                   </ul>

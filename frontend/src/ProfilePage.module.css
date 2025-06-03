@@ -80,3 +80,15 @@
 .orderDetails li:last-child {
   border-bottom: none;
 }
+.cancelBtn {
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background: #E53E3E;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.cancelBtn:hover {
+  background: #C53030;
+}
