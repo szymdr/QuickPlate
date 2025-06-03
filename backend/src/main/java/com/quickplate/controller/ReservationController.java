@@ -23,9 +23,8 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/api/reservations")
 public class ReservationController {
-
-    @Autowired
-    private ReservationRepository repo;
+    private final ReservationRepository repo;
+    public ReservationController(ReservationRepository repo) { this.repo = repo; }
 
     @Autowired
     private UserRepository userRepo;
@@ -53,6 +52,14 @@ public class ReservationController {
           .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         List<Reservation> reservations = repo.findByUser(user);
         return ResponseEntity.ok(reservations);
+    }
+
+    @GetMapping("/restaurant/{restaurantId}")
+    public ResponseEntity<List<Reservation>> getByRestaurant(
+        @PathVariable UUID restaurantId
+    ) {
+        List<Reservation> list = repo.findByRestaurant_Id(restaurantId);
+        return ResponseEntity.ok(list);
     }
 
     record ReservationReq(
