@@ -9,4 +9,5 @@ import java.util.UUID;
 
 public interface ReservationRepository extends JpaRepository<Reservation, UUID> {
     List<Reservation> findByUser(User user);
+    List<Reservation> findByRestaurant_Id(UUID restaurantId);
 }
