@@ -20,10 +20,24 @@ The application consists of:
 
 ## Technologies
 
-- **Frontend**: React, Vite, React Router, React Icons, CSS Modules.
-- **Backend**: Spring Boot, Spring Data JPA.
-- **Database**: PostgreSQL.
-- **Other**: Docker Compose, Maven, ESLint.
+- **Frontend**
+   - **React**: Enables building a component-based user interface with reusable code.
+   - **Vite**: Provides lightning-fast development startup and rebuilds using ESBuild.
+   - **React Router**: Simplifies declarative navigation and route management in SPA applications.
+   - **React Icons**: Offers a wide selection of vector icons, easily integrated into React components.
+   - **CSS Modules**: Scoped styles prevent class name conflicts and help maintain organized styling.
+
+- **Backend**
+   - **Spring Boot**: Automatic application configuration, embedded HTTP server, and broad Spring ecosystem support.
+   - **Spring Data JPA**: Simplifies database operations through repositories and entity mapping (ORM).
+
+- **Database**
+   - **PostgreSQL**: Stable open-source relational database with support for advanced data types and extensions.
+
+- **Other**
+   - **Docker Compose**: Unified environment for all services (frontend, backend, DB, RabbitMQ) – easy to launch with a single command.
+   - **Maven**: Standardized build system for Java projects, managing dependencies and plugins.
+   - **ESLint**: Enforces consistent code style and detects potential issues in JavaScript/JSX code.
 
 ## Prerequisites
 
@@ -39,7 +53,7 @@ The application consists of:
 1. Open a terminal and navigate to the project root:
 
    ```bash
-   cd c:\Users\szymo\Desktop\STUDIA\SEMESTR 6\ZTPAI\QuickPlate
+   cd QuickPlate
    ```
 
 2. Build and start the containers:
@@ -49,7 +63,7 @@ The application consists of:
    ```
 
 3. Access the services:
-   - **Frontend**: [http://localhost:3000](http://localhost:3000)
+   - **Frontend**: [http://localhost:5173](http://localhost:5173)
    - **Backend API**: [http://localhost:8080](http://localhost:8080)
    - **PgAdmin**: [http://localhost:5050](http://localhost:5050)
    - **RabbitMQ Management**: [http://localhost:15672](http://localhost:15672)  
@@ -77,7 +91,7 @@ The application consists of:
    npm run dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 #### Backend
 
@@ -136,11 +150,30 @@ cd frontend
 npm run lint
 ```
 
-## Additional Information
+## Architecture
 
-- The login page is implemented in [Login.jsx](./frontend/src/Login.jsx).
-- Backend's user management endpoints can be found in [UserController.java](./backend/src/main/java/com/quickplate/controller/UserController.java).
+```mermaid
+flowchart TD
+  subgraph Frontend
+    direction TB
+    A[React + Vite] -->|HTTP/REST| B[Spring Boot REST API]
+  end
 
-## License
+  subgraph Backend
+    direction LR
+    B -->|JDBC| C[(PostgreSQL)]
+    B -->|AMQP| D[(RabbitMQ)]
+  end
 
-This project is licensed under the MIT License.
+  subgraph Orchestration
+    direction TB
+    E[Docker Compose] --> A
+    E --> B
+    E --> C
+    E --> D
+  end
+```
+
+## Entity-Relationship Diagram
+
+![ERD Diagram](docs/erd.png)
