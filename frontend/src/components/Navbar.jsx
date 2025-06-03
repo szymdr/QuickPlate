@@ -42,6 +42,11 @@ export default function Navbar() {
                 <Link to="/profile">Profile</Link>
               </li>
             )}
+            {(user.role === "ADMIN" || user.accountType.name === "ADMIN") && (
+              <li>
+                <Link to="/admin">Admin Dashboard</Link>
+              </li>
+            )}
             <li>
               <Link to="/logout">Log Out</Link>
             </li>

@@ -49,7 +49,11 @@ export default function LoginPage() {
 
     if (me.accountType.name === 'RESTAURANT_OWNER') {
       navigate('/owner', { replace: true });
-    } else {
+    } 
+    else if (me.accountType.name === 'ADMIN') {
+      navigate('/admin', { replace: true });
+    } 
+    else {
       navigate('/', { replace: true });
     }
   };
