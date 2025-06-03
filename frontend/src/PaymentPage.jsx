@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import styles from './PaymentPage.module.css';
 
 export default function PaymentPage() {
+  useEffect(() => {
+    document.title = 'Payment ∙ QuickPlate'
+  }, [])
   const navigate = useNavigate();
   const { cart, dateTime, guests, orderId } = useLocation().state || {};
   const [method, setMethod] = useState('card');

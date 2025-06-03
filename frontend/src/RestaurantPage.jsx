@@ -21,6 +21,10 @@ function RestaurantPage() {
       .then(data => setRestaurant(data));
   }, [id]);
 
+    useEffect(() => {
+        document.title = `${restaurant?.name || ''} ∙ QuickPlate`
+    }, [])
+
   useEffect(() => {
     fetch(`http://localhost:8080/api/restaurants/${id}/menu`)
       .then(res => res.json())
