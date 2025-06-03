@@ -78,4 +78,13 @@ public class RestaurantController {
         List<MenuItem> menu = menuItemRepository.findByRestaurantId(id);
         return ResponseEntity.ok(menu);
     }
+
+    @GetMapping("/owner/{ownerId}")
+    public ResponseEntity<List<Restaurant>> getRestaurantsByOwner(@PathVariable UUID ownerId) {
+        List<Restaurant> restaurants = restaurantRepository.findByOwnerId(ownerId);
+        if (restaurants.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(restaurants);
+    }
 }
