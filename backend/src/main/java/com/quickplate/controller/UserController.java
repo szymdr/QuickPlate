@@ -6,6 +6,7 @@ import com.quickplate.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -72,7 +73,6 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser(Principal principal) {
-        // Principal.getName() should be the userId (as set by your JWT filter)
         UUID userId = UUID.fromString(principal.getName());
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -80,24 +80,32 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or principal.name == #id.toString()")
     @PatchMapping("/{id}")
-    public ResponseEntity<User> updateUser(
+    public ResponseEntity<User> patchUser(
         @PathVariable UUID id,
         @RequestBody User updates,
         Principal principal
     ) {
-        UUID me = UUID.fromString(principal.getName());
-        if (!me.equals(id)) {
-            return ResponseEntity.status(403).build();
-        }
         User user = userRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        user.setFirstName(updates.getFirstName());
-        user.setLastName(updates.getLastName());
-        user.setEmail(updates.getEmail());
-        user.setPhone(updates.getPhone());
+
+        if (updates.getFirstName() != null) user.setFirstName(updates.getFirstName());
+        if (updates.getLastName()  != null) user.setLastName(updates.getLastName());
+        if (updates.getEmail()     != null) user.setEmail(updates.getEmail());
+        if (updates.getPhone()     != null) user.setPhone(updates.getPhone());
+
+        if (hasRole("ADMIN") && updates.getAccountType() != null) {
+            user.setAccountType(updates.getAccountType());
+        }
+
         User saved = userRepository.save(user);
         saved.setPasswordHash(null);
         return ResponseEntity.ok(saved);
+    }
+
+    private boolean hasRole(String role) {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+            .stream().anyMatch(a -> a.getAuthority().equals("ROLE_" + role));
     }
 }
