@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import styles from './ReservationPage.module.css';
 
 export default function ReservationPage() {
-  const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const { id } = useParams();
   const reservedCart = location.state?.cart || [];
 
   const today = new Date();
@@ -49,12 +49,16 @@ export default function ReservationPage() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-
     const dateTime = `${date}T${time}`;
     const token = localStorage.getItem('token');
     if (!token) {
       navigate('/login', {
-        state: { redirectTo: '/payment', cart: reservedCart, dateTime, guests }
+        state: {
+          redirectTo: location.pathname,
+          cart: reservedCart,
+          dateTime,
+          guests
+        }
       });
       return;
     }
