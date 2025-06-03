@@ -37,8 +37,9 @@ public class SecurityConfig {
               "/api/restaurants/**",
               "/api/users/me"
             ).permitAll()
-            .antMatchers(HttpMethod.POST, "/api/reservations").hasAnyRole("USER", "ADMIN")
-            .antMatchers("/api/reservations/**", "/api/orders/**").hasAnyRole("USER", "ADMIN")
+            .antMatchers(HttpMethod.PATCH, "/api/users/{id}").hasAnyRole("USER", "RESTAURANT_OWNER", "ADMIN")
+            .antMatchers(HttpMethod.POST, "/api/reservations").hasAnyRole("USER", "RESTAURANT_OWNER", "ADMIN")
+            .antMatchers("/api/reservations/**", "/api/orders/**").hasAnyRole("USER", "RESTAURANT_OWNER", "ADMIN")
             .antMatchers("/api/users/**").hasRole("ADMIN")
             .anyRequest().authenticated()
           )
