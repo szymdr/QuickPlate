@@ -23,11 +23,32 @@ export default function AdminDashboard() {
 
   const fetchAll = () => {
     fetch('http://localhost:8080/api/admin/restaurants', { headers })
-      .then(r=>r.ok? r.json():[]).then(setRestaurants);
+      .then(r => r.ok ? r.json() : [])
+      .then(setRestaurants);
+
     fetch('http://localhost:8080/api/admin/reservations', { headers })
-      .then(r=>r.ok? r.json():[]).then(setReservations);
+      .then(r => r.ok ? r.json() : [])
+      .then(async list => {
+        const enriched = await Promise.all(
+          list.map(async res => {
+            const or = await fetch(
+              `http://localhost:8080/api/orders/reservation/${res.id}`,
+              { headers }
+            );
+            if (or.ok) {
+              const order = await or.json();
+              return { ...res, status: order.status };
+            }
+            return { ...res, status: null };
+          })
+        );
+        return enriched;
+      })
+      .then(setReservations);
+
     fetch('http://localhost:8080/api/admin/users', { headers })
-      .then(r=>r.ok? r.json():[]).then(setUsers);
+      .then(r => r.ok ? r.json() : [])
+      .then(setUsers);
   };
 
   const startEdit = (type, id, field, value) => {
@@ -48,9 +69,18 @@ export default function AdminDashboard() {
 
   const onKey = e => { if (e.key==='Enter') commitEdit(); };
 
+  const deleteUser = async id => {
+    if (!window.confirm('Czy na pewno chcesz usunąć tego konto użytkownika?')) return;
+    await fetch(`http://localhost:8080/api/users/${id}`, {
+      method: 'DELETE',
+      headers
+    });
+    fetchAll();
+  };
+
   return (
     <>
-      <Navbar />
+      <Navbar/>
       <div className={styles.dashboard}>
         <h2>Admin Panel</h2>
 
@@ -164,6 +194,7 @@ export default function AdminDashboard() {
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Akcje</th>
               </tr>
             </thead>
             <tbody>
@@ -199,6 +230,14 @@ export default function AdminDashboard() {
                       )
                       : u.accountType?.name || u.role
                     }
+                  </td>
+                  <td>
+                    <button
+                      className={styles.deleteBtn}
+                      onClick={() => deleteUser(u.id)}
+                    >
+                      Usuń
+                    </button>
                   </td>
                 </tr>
               ))}
