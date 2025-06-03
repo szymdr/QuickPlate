@@ -177,4 +177,17 @@ public class OrderController {
                 "Order not found for reservation " + reservationId));
         return ResponseEntity.ok(order);
     }
+
+    @GetMapping("/statuses")
+    public ResponseEntity<List<String>> listAllStatuses() {
+        return ResponseEntity.ok(List.of(
+            OrderStatus.PENDING,
+            OrderStatus.PAID,
+            OrderStatus.ACCEPTED,
+            OrderStatus.PREPARING,
+            OrderStatus.READY,
+            OrderStatus.COMPLETED,
+            OrderStatus.CANCELLED
+        ));
+    }
 }
