@@ -24,14 +24,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
 @WebMvcTest(UserController.class)
-@AutoConfigureMockMvc(addFilters = false)      // <<< disable security filters
+@AutoConfigureMockMvc(addFilters = false)
 class UserControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private JwtAuthenticationFilter jwtAuthenticationFilter; // <<– add this
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @MockBean
     private UserRepository repo;
@@ -92,19 +92,15 @@ class UserControllerTest {
     @Test
     @DisplayName("POST /api/users → 201 + Location header")
     void createUser_created() throws Exception {
-        // keep the sample ID in a local var
         UUID generatedId = sample.getId();
 
-        // build a separate payload object (don't reuse 'sample')
         User toCreate = new User();
         toCreate.setFirstName(sample.getFirstName());
         toCreate.setLastName(sample.getLastName());
         toCreate.setEmail(sample.getEmail());
         toCreate.setPasswordHash(sample.getPasswordHash());
         toCreate.setPhone(sample.getPhone());
-        // leave toCreate.id == null
 
-        // stub save to assign the captured ID
         when(repo.save(any(User.class))).thenAnswer(inv -> {
             User u = inv.getArgument(0);
             u.setId(generatedId);
